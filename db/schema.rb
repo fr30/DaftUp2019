@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2019_05_08_142130) do
     t.integer "quantity", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["cart_id", "product_id"], name: "index_items_on_cart_id_and_product_id", unique: true
   end
 
   create_table "products", force: :cascade do |t|

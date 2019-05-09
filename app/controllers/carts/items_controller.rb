@@ -1,7 +1,7 @@
 module Carts
   class ItemsController < ApplicationController
     before_action :set_item, only: [:show, :update, :destroy]
-    before_action :set_cart, only: [:crate]
+    before_action :set_cart, only: [:create, :update]
     # GET /items
     def index
       @items = Item.all
@@ -16,11 +16,10 @@ module Carts
     # POST /items
     def create
       @item = Item.new(product: Product.find(item_params[:product_id]),
-                       cart: Cart.first,
-                       quantity: item_params[:quantity])
-      # render json: item_params
+                       cart: @cart)
+      @item.quantity = quantity
       if @item.save
-        render json: Cart.first.products, status: :created
+        render json: @cart, status: :created
       else
         render json: @item.errors, status: :unprocessable_entity
       end
@@ -28,8 +27,8 @@ module Carts
 
     # PATCH/PUT /items/1
     def update
-      if @item.update(item_params)
-        render json: @item
+      if @item.update(quantity: item_params[:quantity])
+        render json: @cart
       else
         render json: @item.errors, status: :unprocessable_entity
       end
@@ -48,12 +47,21 @@ module Carts
 
     # Only allow a trusted parameter "white list" through.
     def item_params
-      params.permit(:quantity, :product_id)
+      params.permit(:quantity, :product_id, :id)
     end
 
     def set_cart
       if(Cart.first.nil?)
         Cart.create
+      end
+      @cart = Cart.first
+    end
+
+    def quantity
+      if params.has_key? :quantity
+        params[:quantity]
+      else
+        1
       end
     end
   end
