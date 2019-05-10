@@ -1,5 +1,4 @@
 class Item < ApplicationRecord
-  validates :product_id, :uniqueness => { :scope => [:cart_id] }
-  belongs_to :cart
+  validates :product_id, uniqueness: true
   belongs_to :product
 end

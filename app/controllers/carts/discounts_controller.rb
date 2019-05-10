@@ -1,51 +1,30 @@
-class DiscountsController < ApplicationController
-  before_action :set_discount, only: [:show, :update, :destroy]
+module Carts
+  class DiscountsController < ApplicationController
+    before_action :set_items_and_discounts, only: [:create]
 
-  # GET /discounts
-  def index
-    @discounts = Discount.all
-
-    render json: @discounts
-  end
-
-  # GET /discounts/1
-  def show
-    render json: @discount
-  end
-
-  # POST /discounts
-  def create
-    @discount = Discount.new(discount_params)
-
-    if @discount.save
-      render json: @discount, status: :created, location: @discount
-    else
-      render json: @discount.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /discounts/1
-  def update
-    if @discount.update(discount_params)
-      render json: @discount
-    else
-      render json: @discount.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /discounts/1
-  def destroy
-    @discount.destroy
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_discount
-      @discount = Discount.find(params[:id])
+    def create
+      # render json: discount_params[:product_ids]
+      @discount = Discount.new(discount_params)
+      if @discount.save
+        render json: items_and_discounts_serialized, status: :created
+      else
+        render json: @discount.errors, status: :unprocessable_entity
+      end
     end
 
-    # Only allow a trusted parameter "white list" through.
+    def update
+      if @discount.update(discount_params)
+        render json: @discount
+      else
+        render json: @discount.errors, status: :unprocessable_entity
+      end
+    end
+
+    private
+
     def discount_params
-      params.fetch(:discount, {})
+      params.permit(:kind, :name, :price, product_ids: [])
     end
+  end
 end
+

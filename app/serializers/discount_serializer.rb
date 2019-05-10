@@ -1,3 +1,3 @@
 class DiscountSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :kind, :name, :product_ids
 end
