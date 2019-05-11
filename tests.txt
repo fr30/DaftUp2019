@@ -1,0 +1,309 @@
+TEST 1
+
+POST /cart/items
+
+{
+  "product_id": 5,
+  "quantity": 2
+}
+
+POST /cart/discounts
+
+{
+  "kind": "extra",
+  "name": "Three for two",
+  "product_ids": [5],
+  "count": 2
+}
+
+GET cart/total
+
+{
+    "sets": [],
+    "extras": [
+        {
+            "name": "Three for two",
+            "products": [
+                {
+                    "id": 5,
+                    "name": "Beer",
+                    "price": 4
+                },
+                {
+                    "id": 5,
+                    "name": "Beer",
+                    "price": 4
+                },
+                {
+                    "id": 5,
+                    "name": "Beer",
+                    "price": 4
+                }
+            ],
+            "total": 8
+        }
+    ],
+    "regular_products": [],
+    "regular_price": 8
+}
+
+################################################################################
+
+TEST 2
+
+POST /cart/items
+
+{
+  "product_id": 20,
+  "quantity": 1
+}
+
+POST /cart/discounts
+
+{
+  "kind": "set",
+  "name": "Bluetooth speaker discount",
+  "product_ids": [20],
+  "price": 20.99
+}
+
+GET cart/total
+
+{
+    "sets": [
+        {
+            "name": "Bluetooth speaker discount",
+            "products": [
+                {
+                    "id": 20,
+                    "name": "Bluetooth Speaker",
+                    "price": 159.99
+                }
+            ],
+            "total": 20.99
+        }
+    ],
+    "extras": [],
+    "regular_products": [],
+    "regular_price": 159.99
+}
+
+################################################################################
+
+TEST 3
+
+POST /cart/items
+
+{
+  "product_id": 13,
+  "quantity": 2
+}
+
+{
+  "product_id": 15,
+  "quantity": 2
+}
+
+{
+  "product_id": 16,
+  "quantity": 2
+}
+
+{
+  "product_id": 5,
+  "quantity": 2
+}
+
+POST /cart/discounts
+
+{
+  "kind": "set",
+  "name": "Set 1",
+  "product_ids": [13, 15, 16],
+  "price": 10.99
+}
+
+{
+  "kind": "extra",
+  "name": "Three for two",
+  "product_ids": [5],
+  "count": 2
+}
+
+GET /cart/total
+
+{
+    "sets": [
+        {
+            "name": "Set 1",
+            "products": [
+                {
+                    "id": 13,
+                    "name": "Pork Shoulder",
+                    "price": 11
+                },
+                {
+                    "id": 15,
+                    "name": "Cups",
+                    "price": 5
+                },
+                {
+                    "id": 16,
+                    "name": "Plates",
+                    "price": 8
+                }
+            ],
+            "total": 10.99
+        },
+        {
+            "name": "Set 1",
+            "products": [
+                {
+                    "id": 13,
+                    "name": "Pork Shoulder",
+                    "price": 11
+                },
+                {
+                    "id": 15,
+                    "name": "Cups",
+                    "price": 5
+                },
+                {
+                    "id": 16,
+                    "name": "Plates",
+                    "price": 8
+                }
+            ],
+            "total": 10.99
+        }
+    ],
+    "extras": [
+        {
+            "name": "Three for two",
+            "products": [
+                {
+                    "id": 5,
+                    "name": "Beer",
+                    "price": 4
+                },
+                {
+                    "id": 5,
+                    "name": "Beer",
+                    "price": 4
+                },
+                {
+                    "id": 5,
+                    "name": "Beer",
+                    "price": 4
+                }
+            ],
+            "total": 8
+        }
+    ],
+    "regular_products": [],
+    "regular_price": 56
+}
+
+################################################################################
+
+TEST 4
+# my program doesn't find optimal matching, final price should be 49 instead of 50 (2x set 1)
+POST /cart/items
+
+{
+  "product_id": 8,
+  "quantity": 1
+}
+
+{
+  "product_id": 9,
+  "quantity": 1
+}
+
+{
+  "product_id": 11,
+  "quantity": 1
+}
+
+{
+  "product_id": 13,
+  "quantity": 2
+}
+
+{
+  "product_id": 15,
+  "quantity": 2
+}
+
+{
+  "product_id": 17,
+  "quantity": 2
+}
+
+POST /cart/discounts
+
+{
+  "kind": "set",
+  "name": "Set 1",
+  "product_ids": [13, 15, 17],
+  "price": 14
+}
+
+{
+  "kind": "set",
+  "name": "Set 2",
+  "product_ids": [8, 9, 11, 13, 13],
+  "price": 36
+}
+
+GET cart/total
+
+{
+    "sets": [
+        {
+            "name": "Set 2",
+            "products": [
+                {
+                    "id": 8,
+                    "name": "Coal",
+                    "price": 7
+                },
+                {
+                    "id": 9,
+                    "name": "Tofu",
+                    "price": 6
+                },
+                {
+                    "id": 11,
+                    "name": "Chicken Breast",
+                    "price": 8
+                },
+                {
+                    "id": 13,
+                    "name": "Pork Shoulder",
+                    "price": 11
+                },
+                {
+                    "id": 13,
+                    "name": "Pork Shoulder",
+                    "price": 11
+                }
+            ],
+            "total": 36
+        }
+    ],
+    "extras": [],
+    "regular_products": [
+        {
+            "id": 15,
+            "name": "Cups",
+            "price": 5
+        },
+        {
+            "id": 17,
+            "name": "Bread",
+            "price": 2
+        }
+    ],
+    "regular_price": 57
+}
