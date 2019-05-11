@@ -10,8 +10,8 @@ class ApplicationController < ActionController::API
 
   def items_and_discounts_serialized
     {
-        items: ActiveModel::Serializer::CollectionSerializer.new(@items, each_serializer: ItemSerializer),
-        discounts: ActiveModel::Serializer::CollectionSerializer.new(@discounts, each_serializer: DiscountSerializer)
+        items: ActiveModel::Serializer::CollectionSerializer.new(@items),
+        discounts: ActiveModel::Serializer::CollectionSerializer.new(@discounts, type: :discount)
     }
   end
 end

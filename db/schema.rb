@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_221609) do
+ActiveRecord::Schema.define(version: 2019_05_11_135226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,8 +18,9 @@ ActiveRecord::Schema.define(version: 2019_05_09_221609) do
   create_table "discounts", force: :cascade do |t|
     t.string "kind"
     t.string "name"
-    t.float "price"
+    t.float "price", default: 0.0
     t.integer "product_ids", array: true
+    t.integer "count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -37,6 +38,16 @@ ActiveRecord::Schema.define(version: 2019_05_09_221609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_products_on_name", unique: true
+  end
+
+  create_table "serialized_extras", force: :cascade do |t|
+    t.string "kind"
+    t.string "name"
+    t.float "price"
+    t.integer "product_ids", array: true
+    t.integer "count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

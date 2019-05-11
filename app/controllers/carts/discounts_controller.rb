@@ -23,7 +23,7 @@ module Carts
     private
 
     def discount_params
-      params.permit(:kind, :name, :price, product_ids: [])
+      params.permit(:kind, :name, :price, :count,product_ids: [])
     end
   end
 end

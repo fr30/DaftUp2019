@@ -1,0 +1,2 @@
+class SerializedExtra < ApplicationRecord
+end
